@@ -11,42 +11,57 @@ const loadFromLocalStorage = () => {
   document.getElementById("token").value = token;
   document.getElementById("fileKey").value = fileKey;
 };
-const formatAnalysisResults = (analysis) => {
+
+const formatAnalysisResults = (analysis, fileKey) => {
   return analysis
-    .map(({ name, count, type, values, components }) => {
+    .map(({ name, type, count, values, components }) => {
       let result = `<div class="property">`;
-      result += `<div class="property-name">${name} (${count})</div>`;
+      result += `<div class="property-title">
+<span class="property-name">${name}</span>
+<span class="property-type is-${type.toLowerCase()}">${type}</span> <span class="property-count">${count}</span></div>`;
       result += `<div class="property-details">`;
-      result += `Type: ${type}<br>`;
       if (values && values.length) {
         result += `Values: ${values.join(", ")}<br>`;
       }
-      result += `Used in: ${components.join(", ")}`;
+      result += `Used in: ${components
+        .map(
+          ([componentName, componentId]) =>
+            `<a href="https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(componentId)}" 
+                    target="_blank" class="component-link">${componentName}</a>`,
+        )
+        .join(", ")}`;
       result += `</div></div>`;
       return result;
     })
     .join("");
 };
 
-const onsubmit = async (e) => {
+const onSubmit = async (e) => {
   e.preventDefault();
   const token = document.getElementById("token").value;
   const fileKey = document.getElementById("fileKey").value;
   const resultDiv = document.getElementById("result");
   const controls = document.getElementById("controls");
+  const loader = document.createElement("div");
+
+  resultDiv.innerHTML = "";
+  loader.className = "Loader";
+  loader.textContent = "Analyzing...";
+  resultDiv.appendChild(loader);
+
   saveToLocalStorage(token, fileKey);
-  resultDiv.textContent = "Analyzing...";
   controls.style.display = "none";
+
   try {
     const library = new Library(token, fileKey);
     const variantProperties = await library.fetch();
     fullAnalysis = library.analyzeComponentNames(variantProperties);
-    resultDiv.innerHTML =
-      "<h2>Variant property analysis</h2>" +
-      formatAnalysisResults(fullAnalysis.slice(0, 10));
+    resultDiv.innerHTML = formatAnalysisResults(fullAnalysis, fileKey);
     controls.style.display = "flex";
+    loader.remove();
   } catch (error) {
     resultDiv.textContent = "Error: " + error.message;
+    loader.remove();
   }
 };
 
@@ -68,6 +83,6 @@ const onDownload = () => {
 
 window.onload = () => {
   loadFromLocalStorage();
-  document.getElementById("apiForm").addEventListener("submit", onsubmit);
+  document.getElementById("apiForm").addEventListener("submit", onSubmit);
   document.getElementById("downloadBtn").addEventListener("click", onDownload);
 };

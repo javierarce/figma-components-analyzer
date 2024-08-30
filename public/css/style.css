@@ -1,6 +1,6 @@
 :root {
   --background: #fff;
-  --text: #333;
+  --text: #000;
 }
 
 html,
@@ -28,20 +28,33 @@ body {
   overflow: hidden;
 }
 
+a {
+  color: var(--text);
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 .Content {
   display: flex;
   width: 100%;
   height: 100%;
 }
+
 .Form {
   flex: 2;
+  gap: 1em;
   display: flex;
-  border-right: 1px solid #ccc;
+  flex-direction: column;
   padding: 1em;
 }
 .Results {
   flex: 8;
   width: 100%;
+  border-left: 1px solid #ccc;
 }
 
 form {
@@ -84,13 +97,54 @@ button {
   flex-direction: column;
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
-  padding: 0.4em;
+  padding: 1em;
+}
+
+.property-title {
+  display: flex;
+  gap: 0.4em;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 0.4em;
 }
 
 .property-name {
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 1.2em;
 }
 
-.property-details {
-  margin: 0 0 1em;
+.property-count,
+.property-type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  color: #000;
+  border-radius: 4px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+}
+
+.property-type.is-boolean {
+  background: #daffe0;
+  color: #144722;
+}
+
+.property-type.is-text {
+  background: #dff4ff;
+  color: #1b2c68;
+}
+
+.property-type.is-variant {
+  background: #fff2d7;
+  color: #4d3716;
+}
+
+.Loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
