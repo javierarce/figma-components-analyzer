@@ -1,4 +1,4 @@
-# Figma Component Analyzer
+# Figma Components Analyzer
 
 This project provides a tool to analyze component variants in a Figma file. It
 extracts information about component properties, their types, possible values,
@@ -26,8 +26,8 @@ predictability in the design system.
 1. Clone this repository:
 
    ```
-   git clone https://github.com/javierarce/figma-component-analyzer.git
-   cd figma-component-analyzer
+   git clone https://github.com/javierarce/figma-components-analyzer.git
+   cd figma-components-analyzer
    ```
 
 2. Install dependencies:
@@ -86,4 +86,3 @@ Show icon (4)
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request.
-

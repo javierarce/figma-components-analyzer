@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Figma Component Analyzer</title>
+  <link rel="stylesheet" href="public/css/style.css">
+  <script src="public/js/library.js"></script>
+  <script src="public/js/client.js"></script>
+</head>
+
+<body>
+  <div class="Content">
+
+    <div class="Form">
+      <form id="apiForm">
+        <input type="text" id="token" placeholder="Enter Figma personal access token" required>
+        <input type="text" id="fileKey" placeholder="Enter Figma file key" required>
+        <button type="submit">Analyze</button>
+
+        <div id="controls" style="display: none;">
+          <button id="downloadBtn">Download analysis</button>
+        </div>
+      </form>
+
+    </div>
+
+    <div class="Results" id="result"></div>
+
+  </div>
+</body>
+
+</html>
