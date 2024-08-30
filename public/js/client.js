@@ -23,20 +23,23 @@ class FigmaAnalyzer {
         let result = `<div class="Property">`;
         result += `<div class="Property__title"><span class="Property__name">${name}</span> <span class="Property__type is-${type.toLowerCase()}">${type}</span></div>`;
         result += `<div class="Property__details">`;
-
+        const componentsLabel =
+          components.length > 1 ? "components" : "component";
         if (values && values.length) {
           result += `<div class="Property__detail"><span class="Property__label">Value</span>: ${values.join(", ")}</div>`;
         }
-
-        result += `<div class="Property__detail"><span class="Property__label">Components (${count})</span>: ${components
+        result += `<details>`;
+        result += `<summary class="Property__summary"><span class="Property__label">${count} ${componentsLabel}</span></summary>`;
+        result += `<div class="Property__components">`;
+        result += components
           .map(([componentName, componentId]) => {
             const url = `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(componentId)}`;
-            `<a href="${url}" target="_blank">${componentName}</a>`;
+            return `<a href="${url}" target="_blank" class="Component">${componentName}</a>`;
           })
-          .join(", ")}</div>`;
-
+          .join("");
+        result += `</div>`;
+        result += `</details>`;
         result += `</div></div>`;
-
         return result;
       })
       .join("");
@@ -48,7 +51,6 @@ class FigmaAnalyzer {
     this.fileKey = document.getElementById("fileKey").value;
     const resultDiv = document.getElementById("result");
     const loader = document.createElement("div");
-
     const downloadBtn = document.getElementById("downloadBtn");
     resultDiv.innerHTML = "";
     loader.className = "Loader";
