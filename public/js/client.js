@@ -20,16 +20,17 @@ class FigmaAnalyzer {
   formatAnalysisResults(analysis, fileKey) {
     return analysis
       .map(({ name, type, count, values, components }) => {
-        let result = `<div class="Property">`;
-        result += `<div class="Property__title"><span class="Property__name">${name}</span> <span class="Property__type is-${type.toLowerCase()}">${type}</span></div>`;
-        result += `<div class="Property__details">`;
+        let result = `<div class="Property is-${type.toLowerCase()}">`;
         const componentsLabel =
           components.length > 1 ? "components" : "component";
+        result += `<div class="Property__title">
+<div><span class="Property__name">${name}</span> &mdash; <span class="Property__count">${count} ${componentsLabel}</span></div>
+
+</span> <span class="Property__type is-${type.toLowerCase()}">${type}</span></div>`;
+        result += `<div class="Property__details">`;
         if (values && values.length) {
-          result += `<div class="Property__detail"><span class="Property__label">Value</span>: ${values.join(", ")}</div>`;
+          result += `<div class="Property__detail"><span class="Property__label">Values</span>: ${values.join(", ")}</div>`;
         }
-        result += `<details>`;
-        result += `<summary class="Property__summary"><span class="Property__label">${count} ${componentsLabel}</span></summary>`;
         result += `<div class="Property__components">`;
         result += components
           .map(([componentName, componentId]) => {
@@ -38,7 +39,6 @@ class FigmaAnalyzer {
           })
           .join("");
         result += `</div>`;
-        result += `</details>`;
         result += `</div></div>`;
         return result;
       })
@@ -66,6 +66,7 @@ class FigmaAnalyzer {
         this.fullAnalysis,
         this.fileKey,
       );
+      this.addPropertyClickListeners();
       downloadBtn.style.display = "block";
       loader.remove();
     } catch (error) {
@@ -88,6 +89,22 @@ class FigmaAnalyzer {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }
+  }
+
+  addPropertyClickListeners() {
+    const properties = document.querySelectorAll(".Property");
+    properties.forEach((property) => {
+      property.addEventListener("click", (e) => {
+        // Prevent click on links from toggling the components
+        if (e.target.tagName === "A") return;
+
+        const componentsDiv = property.querySelector(".Property__components");
+        if (componentsDiv) {
+          componentsDiv.classList.toggle("is-open");
+          property.classList.toggle("is-open");
+        }
+      });
+    });
   }
 
   init() {

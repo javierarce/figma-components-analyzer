@@ -117,10 +117,26 @@ button {
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
   padding: 1em;
+  cursor: pointer;
+}
+.Property:hover {
+  background: #fafafa;
+}
+
+.Property__components {
+  display: none;
+}
+
+.Property__components.is-open {
+  display: block;
 }
 
 .Property__label {
   font-weight: 500;
+}
+
+.Property__summary .Property__label {
+  text-decoration: underline;
 }
 
 .Property__title {
@@ -155,7 +171,6 @@ button {
   color: #000;
 }
 
-.Property__count,
 .Property__type {
   display: inline-flex;
   align-items: center;
@@ -167,6 +182,18 @@ button {
   text-transform: uppercase;
   padding: 4px 8px;
   font-weight: 500;
+}
+
+.Property.is-boolean:hover {
+  background-color: rgba(218, 255, 224, 0.3);
+}
+
+.Property.is-text:hover {
+  background-color: rgba(223, 244, 255, 0.3);
+}
+
+.Property.is-variant:hover {
+  background-color: rgba(255, 242, 215, 0.3);
 }
 
 .Property__type.is-boolean {
