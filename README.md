@@ -9,6 +9,10 @@ potential improvements in the naming, structure, and usage of component
 variants. This information is valuable for ensuring consistency and
 predictability in the design system.
 
+### Online version
+
+You can run the tool directly from [this page](https://javierarce.github.io/figma-components-analyzer). 
+
 ## Features
 
 - Fetches component data from a specified Figma file
