@@ -23,17 +23,20 @@ class FigmaAnalyzer {
         let result = `<div class="Property">`;
         result += `<div class="Property__title"><span class="Property__name">${name}</span> <span class="Property__type is-${type.toLowerCase()}">${type}</span></div>`;
         result += `<div class="Property__details">`;
+
         if (values && values.length) {
           result += `<div class="Property__detail"><span class="Property__label">Value</span>: ${values.join(", ")}</div>`;
         }
+
         result += `<div class="Property__detail"><span class="Property__label">Components (${count})</span>: ${components
-          .map(
-            ([componentName, componentId]) =>
-              `<a href="https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(componentId)}" 
-                      target="_blank" class="component-link">${componentName}</a>`,
-          )
+          .map(([componentName, componentId]) => {
+            const url = `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(componentId)}`;
+            `<a href="${url}" target="_blank">${componentName}</a>`;
+          })
           .join(", ")}</div>`;
+
         result += `</div></div>`;
+
         return result;
       })
       .join("");
@@ -44,14 +47,15 @@ class FigmaAnalyzer {
     this.token = document.getElementById("token").value;
     this.fileKey = document.getElementById("fileKey").value;
     const resultDiv = document.getElementById("result");
-    const controls = document.getElementById("controls");
     const loader = document.createElement("div");
+
+    const downloadBtn = document.getElementById("downloadBtn");
     resultDiv.innerHTML = "";
     loader.className = "Loader";
     loader.textContent = "Analyzing...";
     resultDiv.appendChild(loader);
     this.saveToLocalStorage(this.token, this.fileKey);
-    controls.style.display = "none";
+    downloadBtn.style.display = "none";
     try {
       const library = new Library(this.token, this.fileKey);
       const variantProperties = await library.fetch();
@@ -60,7 +64,7 @@ class FigmaAnalyzer {
         this.fullAnalysis,
         this.fileKey,
       );
-      controls.style.display = "flex";
+      downloadBtn.style.display = "block";
       loader.remove();
     } catch (error) {
       resultDiv.textContent = "Error: " + error.message;
