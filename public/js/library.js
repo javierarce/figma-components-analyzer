@@ -75,7 +75,10 @@ class Library {
             delete properties[prop].values;
           }
         }
-        variantProperties[component.name] = properties;
+        variantProperties[component.name] = {
+          properties: properties,
+          id: component.id, // Store the component ID
+        };
       }
     }
     return variantProperties;
@@ -87,32 +90,40 @@ class Library {
 
   analyzeComponentNames(variantProperties) {
     const propertyAnalysis = {};
-    for (const componentName in variantProperties) {
-      const properties = variantProperties[componentName];
+    for (const [componentName, componentData] of Object.entries(
+      variantProperties,
+    )) {
+      const properties = componentData.properties;
       for (const propName in properties) {
-        if (!propertyAnalysis[propName]) {
-          propertyAnalysis[propName] = {
+        const propType = properties[propName].type;
+        const key = `${propName}:${propType}`;
+        if (!propertyAnalysis[key]) {
+          propertyAnalysis[key] = {
+            name: propName,
+            type: propType,
             count: 1,
-            type: properties[propName].type,
             values: new Set(),
-            components: new Set([componentName]),
+            components: new Set([[componentName, componentData.id]]),
           };
         } else {
-          propertyAnalysis[propName].count++;
-          propertyAnalysis[propName].components.add(componentName);
+          propertyAnalysis[key].count++;
+          propertyAnalysis[key].components.add([
+            componentName,
+            componentData.id,
+          ]);
         }
         if (properties[propName].values) {
           properties[propName].values.forEach((value) =>
-            propertyAnalysis[propName].values.add(value),
+            propertyAnalysis[key].values.add(value),
           );
         }
       }
     }
-    const sortedProperties = Object.entries(propertyAnalysis)
-      .map(([name, { count, type, values, components }]) => ({
+    const sortedProperties = Object.values(propertyAnalysis)
+      .map(({ name, type, count, values, components }) => ({
         name,
-        count,
         type,
+        count,
         values: Array.from(values),
         components: Array.from(components),
       }))
