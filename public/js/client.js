@@ -47,17 +47,18 @@ class FigmaAnalyzer {
 
   async onSubmit(e) {
     e.preventDefault();
+    e.stopPropagation();
     this.token = document.getElementById("token").value;
     this.fileKey = document.getElementById("fileKey").value;
     const resultDiv = document.getElementById("result");
     const loader = document.createElement("div");
-    const downloadBtn = document.getElementById("downloadBtn");
+    const controls = document.getElementById("controls");
     resultDiv.innerHTML = "";
     loader.className = "Loader";
     loader.textContent = "Analyzing...";
     resultDiv.appendChild(loader);
     this.saveToLocalStorage(this.token, this.fileKey);
-    downloadBtn.style.display = "none";
+    controls.style.display = "none";
     try {
       const library = new Library(this.token, this.fileKey);
       const variantProperties = await library.fetch();
@@ -67,7 +68,7 @@ class FigmaAnalyzer {
         this.fileKey,
       );
       this.addPropertyClickListeners();
-      downloadBtn.style.display = "block";
+      controls.style.display = "block";
       loader.remove();
     } catch (error) {
       resultDiv.textContent = "Error: " + error.message;
@@ -75,7 +76,10 @@ class FigmaAnalyzer {
     }
   }
 
-  onDownload() {
+  onDownload(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (this.fullAnalysis) {
       const blob = new Blob([JSON.stringify(this.fullAnalysis, null, 2)], {
         type: "application/json",
@@ -114,7 +118,7 @@ class FigmaAnalyzer {
       .addEventListener("submit", (e) => this.onSubmit(e));
     document
       .getElementById("downloadBtn")
-      .addEventListener("click", () => this.onDownload());
+      .addEventListener("click", (e) => this.onDownload(e));
   }
 }
 
