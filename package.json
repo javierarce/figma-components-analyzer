@@ -1,0 +1,14 @@
+{
+  "name": "variable-names",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "figma-js": "^1.16.1-0",
+    "node-fetch": "^3.3.2"
+  }
+}

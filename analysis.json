@@ -1,0 +1,1012 @@
+[
+  {
+    "name": "State",
+    "count": 24,
+    "type": "VARIANT",
+    "values": [
+      "Default",
+      "Receded",
+      "State3",
+      "Hover",
+      "Active",
+      "Disabled",
+      "Active + Disabled",
+      "Read only",
+      "Selected",
+      "Defaul"
+    ],
+    "components": [
+      "preview",
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Checkbox",
+      "Item",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem",
+      "Radio",
+      "Select",
+      "Snackbar",
+      "Tab",
+      "Stepper Input",
+      "Text Input",
+      "Toggle Control",
+      "Toggle Group",
+      "Token",
+      "Dataview / Table Row",
+      "Dataview / List Item",
+      "Menu Item",
+      "_Deprecated – Text Input",
+      "_Deprecated – Unit Input"
+    ]
+  },
+  {
+    "name": "Focussed",
+    "count": 20,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Checkbox",
+      "Item",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem",
+      "Radio",
+      "Range",
+      "Select",
+      "Tab",
+      "Stepper Input",
+      "Text Input",
+      "Toggle Control",
+      "Toggle Group",
+      "Token",
+      "_Deprecated – Text Input",
+      "_Deprecated – Unit Input"
+    ]
+  },
+  {
+    "name": "Icon",
+    "count": 13,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      ".Decoration",
+      "Item",
+      "DropdownMenuItem",
+      "Notice content",
+      "Snackbar",
+      "Tab",
+      "Menu Item",
+      "Dataview / Empty state",
+      "_Deprecated – Text Input"
+    ]
+  },
+  {
+    "name": "Label",
+    "count": 12,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Item",
+      "Label",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem",
+      "Tab",
+      "Token",
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Size",
+    "count": 12,
+    "type": "VARIANT",
+    "values": [
+      "Large",
+      "Medium",
+      "Small"
+    ],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Range",
+      "Range with input",
+      "Select",
+      "Stepper Input",
+      "Text Input",
+      "Header / Page",
+      "_Deprecated – Text Input",
+      "_Deprecated – Unit Input"
+    ]
+  },
+  {
+    "name": "Value",
+    "count": 7,
+    "type": "VARIANT",
+    "values": [
+      "0",
+      "25%",
+      "50%",
+      "75%",
+      "100%"
+    ],
+    "components": [
+      "Range",
+      "Select",
+      "Stepper Input",
+      "Text Input",
+      "Token",
+      "_Deprecated – Text Input",
+      "_Deprecated – Unit Input"
+    ]
+  },
+  {
+    "name": "Show icon",
+    "count": 6,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Tab",
+      "_Deprecated – Text Input"
+    ]
+  },
+  {
+    "name": "Show Tooltip",
+    "count": 5,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Token"
+    ]
+  },
+  {
+    "name": "Show text label",
+    "count": 5,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Primary",
+      "Secondary",
+      "Tertiary",
+      "Link",
+      "Tab"
+    ]
+  },
+  {
+    "name": "Type",
+    "count": 5,
+    "type": "VARIANT",
+    "values": [
+      "Text | Select",
+      "Checkbox | Radio",
+      "Toggle",
+      "Background image",
+      "Color",
+      "Colors",
+      "Type",
+      "Icon",
+      "User",
+      "Flyout",
+      "Regular",
+      "Neutral",
+      "Info",
+      "Error",
+      "Alert",
+      "Success",
+      "Default",
+      "Header"
+    ],
+    "components": [
+      "Field",
+      ".Decoration",
+      "DropdownMenuItem",
+      "Notice Banner",
+      "Cell"
+    ]
+  },
+  {
+    "name": "Help text",
+    "count": 4,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Field",
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem"
+    ]
+  },
+  {
+    "name": "Checked",
+    "count": 3,
+    "type": "VARIANT",
+    "values": [
+      "False",
+      "True",
+      "Indeterminate"
+    ],
+    "components": [
+      "Checkbox",
+      "Radio",
+      "Toggle Control"
+    ]
+  },
+  {
+    "name": "Variant",
+    "count": 3,
+    "type": "VARIANT",
+    "values": [
+      "Default",
+      "Toggle",
+      "Regular",
+      "Minimal",
+      "No Results",
+      "Empty",
+      "Custom"
+    ],
+    "components": [
+      "Label",
+      "Select",
+      "Dataview / Empty state"
+    ]
+  },
+  {
+    "name": "Suffix",
+    "count": 3,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem"
+    ]
+  },
+  {
+    "name": "Has suffix",
+    "count": 3,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem"
+    ]
+  },
+  {
+    "name": "Has help text",
+    "count": 3,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "DropdownMenuItem",
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem"
+    ]
+  },
+  {
+    "name": "Selected",
+    "count": 3,
+    "type": "BOOLEAN",
+    "values": [
+      "False",
+      "True"
+    ],
+    "components": [
+      "DropdownMenuCheckboxItem",
+      "DropdownMenuRadioItem",
+      "Dataview / Grid item"
+    ]
+  },
+  {
+    "name": "Disabled",
+    "count": 2,
+    "type": "VARIANT",
+    "values": [
+      "False",
+      "True"
+    ],
+    "components": [
+      "Range",
+      "Toggle Control"
+    ]
+  },
+  {
+    "name": "Count",
+    "count": 2,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Tab",
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Actions/Secondary",
+    "count": 2,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row",
+      "Dataview / List Item"
+    ]
+  },
+  {
+    "name": "Actions/More",
+    "count": 2,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row",
+      "Dataview / List Item"
+    ]
+  },
+  {
+    "name": "Actions/Primary",
+    "count": 2,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row",
+      "Dataview / List Item"
+    ]
+  },
+  {
+    "name": "Description",
+    "count": 2,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page",
+      "Dataview / Empty state"
+    ]
+  },
+  {
+    "name": "Title",
+    "count": 2,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Header / Page",
+      "Dataview / Empty state"
+    ]
+  },
+  {
+    "name": "Content",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Badge"
+    ]
+  },
+  {
+    "name": "Colour",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "gray",
+      "blue",
+      "red",
+      "yellow",
+      "green"
+    ],
+    "components": [
+      "Badge"
+    ]
+  },
+  {
+    "name": "Error text",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Field"
+    ]
+  },
+  {
+    "name": "Toggle",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Field"
+    ]
+  },
+  {
+    "name": "Help text?",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Field"
+    ]
+  },
+  {
+    "name": "Error",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Field"
+    ]
+  },
+  {
+    "name": "Input",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Field"
+    ]
+  },
+  {
+    "name": "Is set",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      ".Decoration"
+    ]
+  },
+  {
+    "name": "Optional",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Label"
+    ]
+  },
+  {
+    "name": "Indented",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "DropdownMenuItem"
+    ]
+  },
+  {
+    "name": "Indentation",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "Indented",
+      "Icon",
+      "None"
+    ],
+    "components": [
+      "DropdownMenuItem"
+    ]
+  },
+  {
+    "name": "Is dismissible ",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Notice Banner"
+    ]
+  },
+  {
+    "name": "Highlighted",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Notice Banner"
+    ]
+  },
+  {
+    "name": "Title?",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Notice content"
+    ]
+  },
+  {
+    "name": "Actions?",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "No",
+      "Yes"
+    ],
+    "components": [
+      "Notice content"
+    ]
+  },
+  {
+    "name": "Icon?",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "No",
+      "Yes"
+    ],
+    "components": [
+      "Notice content"
+    ]
+  },
+  {
+    "name": "Show Steps",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Range"
+    ]
+  },
+  {
+    "name": "Dropdown",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Search"
+    ]
+  },
+  {
+    "name": "Style",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "Default",
+      "Subtle"
+    ],
+    "components": [
+      "Search"
+    ]
+  },
+  {
+    "name": "Show Icon",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Snackbar"
+    ]
+  },
+  {
+    "name": "Action Text",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Snackbar"
+    ]
+  },
+  {
+    "name": "Action",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Snackbar"
+    ]
+  },
+  {
+    "name": "Text",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Snackbar"
+    ]
+  },
+  {
+    "name": "Property 1",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "components": [
+      "Spinner"
+    ]
+  },
+  {
+    "name": "Padded",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Tab"
+    ]
+  },
+  {
+    "name": "Prefix icon",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Show prefix icon",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Prefix text",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Show prefix",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Placeholder",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Has placeholder",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Has value",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Inline button",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "No",
+      "Yes"
+    ],
+    "components": [
+      "Text Input"
+    ]
+  },
+  {
+    "name": "Operator",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Token"
+    ]
+  },
+  {
+    "name": "Removable",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Token"
+    ]
+  },
+  {
+    "name": "Show label",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Token"
+    ]
+  },
+  {
+    "name": "Has value?",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "False",
+      "True"
+    ],
+    "components": [
+      "Token"
+    ]
+  },
+  {
+    "name": "Locked",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "False"
+    ],
+    "components": [
+      "Dataview / Grid item"
+    ]
+  },
+  {
+    "name": "Has badge",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Cell 2",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Description Text",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Cell 3",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Checkbox visible",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Show Description",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Table Row"
+    ]
+  },
+  {
+    "name": "Fields",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Dataview / List Item"
+    ]
+  },
+  {
+    "name": "Has bulk actions",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Footer"
+    ]
+  },
+  {
+    "name": "Orientation",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "Row",
+      "Stacked"
+    ],
+    "components": [
+      "Dataview / Footer"
+    ]
+  },
+  {
+    "name": "Icon button",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Tertiary Action",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Tabs",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "More Actions",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Secondary Action",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Primary Action",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Subtitle",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Back",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Actions",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Header / Page"
+    ]
+  },
+  {
+    "name": "Right Icon",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Left icon",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Drill down",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Count value",
+    "count": 1,
+    "type": "TEXT",
+    "values": [],
+    "components": [
+      "Menu Item"
+    ]
+  },
+  {
+    "name": "Show save",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Sidebar"
+    ]
+  },
+  {
+    "name": "Sidebar content",
+    "count": 1,
+    "type": "INSTANCE_SWAP",
+    "values": [],
+    "components": [
+      "Sidebar"
+    ]
+  },
+  {
+    "name": "Level",
+    "count": 1,
+    "type": "VARIANT",
+    "values": [
+      "1",
+      "2",
+      "3"
+    ],
+    "components": [
+      "Sidebar"
+    ]
+  },
+  {
+    "name": "Buttons",
+    "count": 1,
+    "type": "BOOLEAN",
+    "values": [],
+    "components": [
+      "Dataview / Empty state"
+    ]
+  }
+]
