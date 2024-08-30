@@ -11,26 +11,39 @@ const loadFromLocalStorage = () => {
   document.getElementById("token").value = token;
   document.getElementById("fileKey").value = fileKey;
 };
+const formatAnalysisResults = (analysis) => {
+  return analysis
+    .map(({ name, count, type, values, components }) => {
+      let result = `<div class="property">`;
+      result += `<div class="property-name">${name} (${count})</div>`;
+      result += `<div class="property-details">`;
+      result += `Type: ${type}<br>`;
+      if (values && values.length) {
+        result += `Values: ${values.join(", ")}<br>`;
+      }
+      result += `Used in: ${components.join(", ")}`;
+      result += `</div></div>`;
+      return result;
+    })
+    .join("");
+};
 
 const onsubmit = async (e) => {
   e.preventDefault();
-
   const token = document.getElementById("token").value;
   const fileKey = document.getElementById("fileKey").value;
   const resultDiv = document.getElementById("result");
   const controls = document.getElementById("controls");
-
   saveToLocalStorage(token, fileKey);
-
   resultDiv.textContent = "Analyzing...";
   controls.style.display = "none";
-
   try {
     const library = new Library(token, fileKey);
     const variantProperties = await library.fetch();
     fullAnalysis = library.analyzeComponentNames(variantProperties);
-
-    resultDiv.textContent = JSON.stringify(fullAnalysis.slice(0, 10), null, 2);
+    resultDiv.innerHTML =
+      "<h2>Variant property analysis</h2>" +
+      formatAnalysisResults(fullAnalysis.slice(0, 10));
     controls.style.display = "flex";
   } catch (error) {
     resultDiv.textContent = "Error: " + error.message;

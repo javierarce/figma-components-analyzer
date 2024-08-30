@@ -42,7 +42,6 @@ body {
 .Results {
   flex: 8;
   width: 100%;
-  padding: 1em;
 }
 
 form {
@@ -78,4 +77,20 @@ button {
 #controls button {
   width: 100%;
   text-align: center;
+}
+
+.property {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 0.4em;
+}
+
+.property-name {
+  font-weight: bold;
+}
+
+.property-details {
+  margin: 0 0 1em;
 }
