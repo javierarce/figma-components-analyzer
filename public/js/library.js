@@ -106,20 +106,21 @@ class Library {
             type: propType,
             count: 1,
             values: new Set(),
-            components: new Set([[componentName, componentData.id]]),
+            components: new Set(),
           };
         } else {
           propertyAnalysis[key].count++;
-          propertyAnalysis[key].components.add([
-            componentName,
-            componentData.id,
-          ]);
         }
         if (properties[propName].values) {
           properties[propName].values.forEach((value) =>
             propertyAnalysis[key].values.add(value),
           );
         }
+        propertyAnalysis[key].components.add([
+          componentName,
+          componentData.id,
+          properties[propName].values || [],
+        ]);
       }
     }
     const sortedProperties = Object.values(propertyAnalysis)

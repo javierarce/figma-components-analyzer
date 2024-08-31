@@ -148,8 +148,21 @@ button {
   cursor: pointer;
   user-select: none;
 }
+
 .Property:hover {
   background: #fafafa;
+}
+
+.Property.is-hover .Property__value {
+  opacity: 0.3;
+}
+
+.Property.is-hover .Property__value.is-highlighted {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .Property.is-open .Property__components {
