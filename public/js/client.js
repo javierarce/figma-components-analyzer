@@ -1,8 +1,42 @@
-class FigmaAnalyzer {
+class FigmaAnalyzer extends Base {
   constructor() {
+    super();
     this.fullAnalysis = null;
     this.token = "";
     this.fileKey = "";
+    this.templateData = {};
+  }
+
+  template() {
+    return `
+
+<div class="Form">
+<h2>Figma<br />Components<br />Analyzer</h2>
+
+<form id="apiForm">
+<input type="text" id="token" placeholder="Figma Personal Access Token" required>
+<input type="text" id="fileKey" placeholder="Figma File Key" required>
+<button type="submit">Analyze</button>
+
+<div class="Download" id="download" style="display: none;">
+<button id="downloadBtn">Download analysis</button>
+</div>
+</form>
+
+</div>
+<div class="Results js-results">
+<div class="Results__header js-results-header"></div>
+<div class="Results__content js-results-content"></div>
+<div class="Results__loader js-results-loader">Analyzing…</div>
+</div>
+
+    `;
+  }
+
+  render() {
+    this.renderTemplate();
+
+    return this.$el;
   }
 
   saveToLocalStorage(token, fileKey) {
@@ -17,30 +51,11 @@ class FigmaAnalyzer {
     document.getElementById("fileKey").value = this.fileKey;
   }
 
-  formatAnalysisResults(analysis, fileKey) {
+  formatAnalysisResults(analysis) {
     return analysis
-      .map(({ name, type, count, values, components }) => {
-        let result = `<div class="Property is-${type.toLowerCase()}">`;
-        const componentsLabel =
-          components.length > 1 ? "components" : "component";
-        result += `<div class="Property__title">
-<div><span class="Property__name">${name}</span> &mdash; <span class="Property__count">${count} ${componentsLabel}</span></div>
-
-</span> <span class="Property__type is-${type.toLowerCase()}">${type}</span></div>`;
-        result += `<div class="Property__details">`;
-        if (values && values.length) {
-          result += `<div class="Property__detail"><span class="Property__label">Values</span>: ${values.join(", ")}</div>`;
-        }
-        result += `<div class="Property__components">`;
-        result += components
-          .map(([componentName, componentId]) => {
-            const url = `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(componentId)}`;
-            return `<a href="${url}" target="_blank" class="Component">${componentName}</a>`;
-          })
-          .join("");
-        result += `</div>`;
-        result += `</div></div>`;
-        return result;
+      .map((propertyData) => {
+        const property = new Property(propertyData, this.fileKey);
+        return property.render().outerHTML;
       })
       .join("");
   }
@@ -48,31 +63,56 @@ class FigmaAnalyzer {
   async onSubmit(e) {
     e.preventDefault();
     e.stopPropagation();
+
     this.token = document.getElementById("token").value;
     this.fileKey = document.getElementById("fileKey").value;
-    const resultDiv = document.getElementById("result");
-    const loader = document.createElement("div");
-    const controls = document.getElementById("controls");
-    resultDiv.innerHTML = "";
-    loader.className = "Loader";
-    loader.textContent = "Analyzing...";
-    resultDiv.appendChild(loader);
+
     this.saveToLocalStorage(this.token, this.fileKey);
-    controls.style.display = "none";
+
+    const $resultsHeader = document.querySelector(".js-results-header");
+    const $resultsContent = document.querySelector(".js-results-content");
+    const $loader = document.querySelector(".js-results-loader");
+    const $download = document.getElementById("download");
+    const $resultsHeaderTitle = document.createElement("h2");
+    $resultsHeaderTitle.className = "ResultsHeader__title";
+    $resultsHeaderTitle.textContent = "Results";
+
+    $resultsHeader.classList.remove("is-visible");
+    $resultsHeader.innerHTML = "";
+    $resultsContent.innerHTML = "";
+    $loader.classList.add("is-visible");
+
+    $download.style.display = "none";
+
     try {
       const library = new Library(this.token, this.fileKey);
-      const variantProperties = await library.fetch();
-      this.fullAnalysis = library.analyzeComponentNames(variantProperties);
-      resultDiv.innerHTML = this.formatAnalysisResults(
+      const components = await library.fetch();
+
+      this.fullAnalysis = library.analyzeComponentNames(components);
+      $resultsHeader.classList.add("is-visible");
+
+      const componentsList = Object.values(components);
+      const componentsLabel =
+        componentsList.length > 1 ? "components" : "component";
+
+      const $info = document.createElement("div");
+      $info.className = "Info";
+      $info.textContent = `${this.fullAnalysis.length} properties found in ${componentsList.length} ${componentsLabel}`;
+      $resultsHeader.appendChild($resultsHeaderTitle);
+      $resultsHeader.appendChild($info);
+
+      $resultsContent.innerHTML = this.formatAnalysisResults(
         this.fullAnalysis,
         this.fileKey,
       );
+
       this.addPropertyClickListeners();
-      controls.style.display = "block";
-      loader.remove();
+
+      $loader.classList.remove("is-visible");
+      $download.style.display = "block";
     } catch (error) {
-      resultDiv.textContent = "Error: " + error.message;
-      loader.remove();
+      $loader.classList.remove("is-visible");
+      $resultsContent.textContent = "Error: " + error.message;
     }
   }
 
@@ -99,8 +139,9 @@ class FigmaAnalyzer {
     const properties = document.querySelectorAll(".Property");
     properties.forEach((property) => {
       property.addEventListener("click", (e) => {
-        // Prevent click on links from toggling the components
-        if (e.target.tagName === "A") return;
+        if (e.target.tagName === "A") {
+          return;
+        }
 
         const componentsDiv = property.querySelector(".Property__components");
         if (componentsDiv) {
@@ -124,5 +165,6 @@ class FigmaAnalyzer {
 
 window.onload = () => {
   const analyzer = new FigmaAnalyzer();
+  document.body.appendChild(analyzer.render());
   analyzer.init();
 };

@@ -1,9 +1,11 @@
 /* Variables */
 :root {
-  --background: #ffffff;
-  --text: #000000;
+  --black: #000000;
+  --white: #ffffff;
   --border-color: #cccccc;
   --form-background: #f5f5f5;
+  --background: var(--white);
+  --text: var(--black);
 }
 
 /* Base Styles */
@@ -43,7 +45,7 @@ h2 {
 }
 
 /* Layout */
-.Content {
+.FigmaAnalyzer {
   display: flex;
   width: 100%;
   height: 100%;
@@ -59,9 +61,45 @@ h2 {
 }
 
 .Results {
+  position: relative;
   flex: 8;
   width: 100%;
   border-left: 1px solid var(--border-color);
+}
+
+.Results__header {
+  padding: 1em;
+  border-bottom: 1px solid var(--border-color);
+  display: none;
+}
+
+.Results__header.is-visible {
+  display: flex;
+  flex-direction: column;
+}
+
+.Results__content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.Results__loader {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  top: 0;
+  left: 0;
+  font-size: 0.8em;
+  display: none;
+}
+
+.Results__loader.is-visible {
+  display: flex;
+  opacity: 1;
+  animation: fadeInOut 2s ease-in-out infinite;
 }
 
 /* Form Styles */
@@ -94,20 +132,9 @@ button {
   cursor: pointer;
 }
 
-#controls button {
+.Download button {
   width: 100%;
   text-align: center;
-}
-
-/* Results Styles */
-#result {
-  font-family: inherit;
-  font-size: 0.8em;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
 }
 
 /* Property Styles */
@@ -117,6 +144,7 @@ button {
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
   padding: 1em;
+  font-size: 0.8em;
   cursor: pointer;
   user-select: none;
 }
@@ -155,12 +183,12 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: var(--white);
   border: 1px solid var(--border-color);
   color: var(--text);
-  font-size: 0.9em;
+  font-size: 0.8em;
   border-radius: 20px;
-  padding: 4px 12px;
+  padding: 2px 8px;
   text-decoration: none;
   margin-right: 0.4em;
   margin-bottom: 0.4em;
@@ -213,6 +241,7 @@ button {
 /* Details and Summary Styles */
 .Property__detail {
   position: relative;
+  max-width: 90%;
 }
 
 .Property__summary {
@@ -228,17 +257,6 @@ button {
 
 .Property__components {
   margin-top: 0.4em;
-}
-
-/* Loader */
-.Loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  animation: fadeInOut 2s ease-in-out infinite;
-  user-select: none;
 }
 
 @keyframes fadeInOut {

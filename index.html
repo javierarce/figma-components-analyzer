@@ -7,28 +7,14 @@
   <title>Figma Components Analyzer</title>
   <link rel="stylesheet" href="public/css/reset.css">
   <link rel="stylesheet" href="public/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/ejs@3.1.10/ejs.min.js"></script>
   <script src="public/js/library.js"></script>
+  <script src="public/js/base.js"></script>
+  <script src="public/js/property.js"></script>
   <script src="public/js/client.js"></script>
 </head>
 
 <body>
-  <div class="Content">
-
-    <div class="Form">
-      <h2>Figma<br />Components<br />Analyzer</h2>
-      <form id="apiForm">
-        <input type="text" id="token" placeholder="Figma Personal Access Token" required>
-        <input type="text" id="fileKey" placeholder="Figma File Key" required>
-        <button type="submit">Analyze</button>
-
-        <div id="controls" style="display: none;">
-          <button id="downloadBtn">Download analysis</button>
-        </div>
-      </form>
-
-    </div>
-    <div class="Results" id="result"></div>
-  </div>
 </body>
 
 </html>
