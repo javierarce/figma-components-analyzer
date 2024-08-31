@@ -30,10 +30,20 @@ class Property extends Base {
     `;
   }
 
+  handleClick(e) {
+    if (e.target.tagName === "A") {
+      return;
+    }
+
+    this.$el.classList.toggle("is-open");
+  }
+
   render() {
     this.templateData = { ...this.data, fileKey: this.fileKey };
     super.render();
     this.$el.classList.add(`is-${this.data.type.toLowerCase()}`);
+    this.$el.addEventListener("click", this.handleClick.bind(this));
+
     return this.$el;
   }
 }

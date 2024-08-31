@@ -14,10 +14,13 @@ class Library {
           },
         },
       );
+
       const file = await response.json();
       const components = this.getAllComponents(file.document);
-      const variantProperties = this.getVariantPropertiesAndValues(components);
-      return variantProperties;
+      const properties = this.getVariantPropertiesAndValues(components);
+      const name = file.name;
+      const lastModified = file.lastModified;
+      return { name, lastModified, properties };
     } catch (error) {
       console.error("Error fetching Figma file:", error);
       throw error;

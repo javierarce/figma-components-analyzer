@@ -5,38 +5,40 @@ class FigmaAnalyzer extends Base {
     this.token = "";
     this.fileKey = "";
     this.templateData = {};
+    this.$resultsHeader = null;
+    this.$resultsContent = null;
+    this.$loader = null;
+    this.$download = null;
+  }
+
+  bindEvents() {
+    document
+      .getElementById("apiForm")
+      .addEventListener("submit", (e) => this.onSubmit(e));
+    document
+      .getElementById("downloadBtn")
+      .addEventListener("click", (e) => this.onDownload(e));
   }
 
   template() {
     return `
-
-<div class="Form">
-<h2>Figma<br />Components<br />Analyzer</h2>
-
-<form id="apiForm">
-<input type="text" id="token" placeholder="Figma Personal Access Token" required>
-<input type="text" id="fileKey" placeholder="Figma File Key" required>
-<button type="submit">Analyze</button>
-
-<div class="Download" id="download" style="display: none;">
-<button id="downloadBtn">Download analysis</button>
-</div>
-</form>
-
-</div>
-<div class="Results js-results">
-<div class="Results__header js-results-header"></div>
-<div class="Results__content js-results-content"></div>
-<div class="Results__loader js-results-loader">Analyzing…</div>
-</div>
-
+      <div class="Form">
+        <h2>Figma<br />Components<br />Analyzer</h2>
+        <form id="apiForm">
+          <input type="text" id="token" placeholder="Figma Personal Access Token" required>
+          <input type="text" id="fileKey" placeholder="Figma File Key" required>
+          <button type="submit">Analyze</button>
+          <div class="Download" id="download" style="display: none;">
+            <button id="downloadBtn">Download analysis</button>
+          </div>
+        </form>
+      </div>
+      <div class="Results js-results">
+        <div class="Results__header js-results-header"></div>
+        <div class="Results__content js-results-content"></div>
+        <div class="Results__loader js-results-loader">Analyzing…</div>
+      </div>
     `;
-  }
-
-  render() {
-    this.renderTemplate();
-
-    return this.$el;
   }
 
   saveToLocalStorage(token, fileKey) {
@@ -49,6 +51,21 @@ class FigmaAnalyzer extends Base {
     this.fileKey = localStorage.getItem("figmaFileKey") || "";
     document.getElementById("token").value = this.token;
     document.getElementById("fileKey").value = this.fileKey;
+  }
+  createPropertyElements(analysis) {
+    return analysis.map((propertyData) => {
+      const property = new Property(propertyData, this.fileKey);
+      return property.render();
+    });
+  }
+
+  displayResultsContent() {
+    this.$resultsContent.innerHTML = "";
+
+    const propertyElements = this.createPropertyElements(this.fullAnalysis);
+    propertyElements.forEach((element) => {
+      this.$resultsContent.appendChild(element);
+    });
   }
 
   formatAnalysisResults(analysis) {
@@ -64,56 +81,80 @@ class FigmaAnalyzer extends Base {
     e.preventDefault();
     e.stopPropagation();
 
-    this.token = document.getElementById("token").value;
-    this.fileKey = document.getElementById("fileKey").value;
-
+    this.updateTokenAndFileKey();
     this.saveToLocalStorage(this.token, this.fileKey);
 
-    const $resultsHeader = document.querySelector(".js-results-header");
-    const $resultsContent = document.querySelector(".js-results-content");
-    const $loader = document.querySelector(".js-results-loader");
-    const $download = document.getElementById("download");
-    const $resultsHeaderTitle = document.createElement("h2");
-    $resultsHeaderTitle.className = "ResultsHeader__title";
-    $resultsHeaderTitle.textContent = "Results";
-
-    $resultsHeader.classList.remove("is-visible");
-    $resultsHeader.innerHTML = "";
-    $resultsContent.innerHTML = "";
-    $loader.classList.add("is-visible");
-
-    $download.style.display = "none";
+    this.resetUI();
+    this.showLoader();
 
     try {
-      const library = new Library(this.token, this.fileKey);
-      const components = await library.fetch();
-
-      this.fullAnalysis = library.analyzeComponentNames(components);
-      $resultsHeader.classList.add("is-visible");
-
-      const componentsList = Object.values(components);
-      const componentsLabel =
-        componentsList.length > 1 ? "components" : "component";
-
-      const $info = document.createElement("div");
-      $info.className = "Info";
-      $info.textContent = `${this.fullAnalysis.length} properties found in ${componentsList.length} ${componentsLabel}`;
-      $resultsHeader.appendChild($resultsHeaderTitle);
-      $resultsHeader.appendChild($info);
-
-      $resultsContent.innerHTML = this.formatAnalysisResults(
-        this.fullAnalysis,
-        this.fileKey,
-      );
-
-      this.addPropertyClickListeners();
-
-      $loader.classList.remove("is-visible");
-      $download.style.display = "block";
+      await this.fetchAndAnalyzeComponents();
+      this.displayResults();
     } catch (error) {
-      $loader.classList.remove("is-visible");
-      $resultsContent.textContent = "Error: " + error.message;
+      this.displayError(error);
     }
+  }
+
+  updateTokenAndFileKey() {
+    this.token = document.getElementById("token").value;
+    this.fileKey = document.getElementById("fileKey").value;
+  }
+
+  resetUI() {
+    this.$resultsHeader.classList.remove("is-visible");
+    this.$resultsHeader.innerHTML = "";
+    this.$resultsContent.innerHTML = "";
+    this.$download.style.display = "none";
+  }
+
+  showLoader() {
+    this.$loader.classList.add("is-visible");
+  }
+
+  hideLoader() {
+    this.$loader.classList.remove("is-visible");
+  }
+
+  async fetchAndAnalyzeComponents() {
+    const library = new Library(this.token, this.fileKey);
+    const document = await library.fetch();
+    this.name = document.name;
+    this.lastModified = document.lastModified;
+    this.fullAnalysis = library.analyzeComponentNames(document.properties);
+  }
+
+  displayResults() {
+    this.hideLoader();
+    this.displayResultsHeader();
+    this.displayResultsContent();
+    // this.addPropertyClickListeners();
+    this.$download.style.display = "block";
+  }
+
+  displayResultsHeader() {
+    this.$resultsHeader.classList.add("is-visible");
+
+    const $resultsHeaderTitle = this.createElement({
+      elementType: "h2",
+      className: "ResultsHeader__title",
+      text: this.name,
+    });
+
+    const componentsList = Object.values(this.fullAnalysis);
+    const componentsLabel =
+      componentsList.length > 1 ? "components" : "component";
+    const $info = this.createElement({
+      className: "Info",
+      text: `${this.fullAnalysis.length} properties found in ${componentsList.length} ${componentsLabel}`,
+    });
+
+    this.$resultsHeader.appendChild($resultsHeaderTitle);
+    this.$resultsHeader.appendChild($info);
+  }
+
+  displayError(error) {
+    this.hideLoader();
+    this.$resultsContent.textContent = "Error: " + error.message;
   }
 
   onDownload(e) {
@@ -136,7 +177,7 @@ class FigmaAnalyzer extends Base {
   }
 
   addPropertyClickListeners() {
-    const properties = document.querySelectorAll(".Property");
+    const properties = this.$el.querySelectorAll(".Property");
     properties.forEach((property) => {
       property.addEventListener("click", (e) => {
         if (e.target.tagName === "A") {
@@ -153,13 +194,18 @@ class FigmaAnalyzer extends Base {
   }
 
   init() {
+    this.bindEvents();
     this.loadFromLocalStorage();
-    document
-      .getElementById("apiForm")
-      .addEventListener("submit", (e) => this.onSubmit(e));
-    document
-      .getElementById("downloadBtn")
-      .addEventListener("click", (e) => this.onDownload(e));
+  }
+
+  render() {
+    this.renderTemplate();
+    this.$resultsHeader = this.$el.querySelector(".js-results-header");
+    this.$resultsContent = this.$el.querySelector(".js-results-content");
+    this.$loader = this.$el.querySelector(".js-results-loader");
+    this.$download = this.$el.querySelector("#download");
+
+    return this.$el;
   }
 }
 

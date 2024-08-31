@@ -152,12 +152,12 @@ button {
   background: #fafafa;
 }
 
-.Property__components {
-  display: none;
+.Property.is-open .Property__components {
+  display: block;
 }
 
-.Property__components.is-open {
-  display: block;
+.Property__components {
+  display: none;
 }
 
 .Property__label {
