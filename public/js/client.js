@@ -12,6 +12,7 @@ class FigmaAnalyzer extends Base {
     this.$filter = null;
     this.$sortSelect = null;
     this.currentSort = "count";
+    this.$info = null;
 
     this.TYPES = {
       ALL: "All types",
@@ -86,6 +87,9 @@ class FigmaAnalyzer extends Base {
         ? this.fullAnalysis
         : this.fullAnalysis.filter((prop) => prop.type === this.currentFilter);
 
+    // Update header info with filtered analysis
+    this.updateHeaderInfo(filteredAnalysis);
+
     // Sort the properties
     filteredAnalysis = this.sortProperties(filteredAnalysis);
 
@@ -127,11 +131,6 @@ class FigmaAnalyzer extends Base {
     return $select;
   }
 
-  onSortChange(e) {
-    this.currentSort = e.target.value;
-    this.displayResultsContent();
-  }
-
   formatAnalysisResults(analysis) {
     return analysis
       .map((propertyData) => {
@@ -165,6 +164,7 @@ class FigmaAnalyzer extends Base {
   }
 
   resetUI() {
+    this.$results.classList.remove("has-error");
     this.$resultsHeader.classList.remove("is-visible");
     this.$resultsHeader.innerHTML = "";
     this.$resultsContent.innerHTML = "";
@@ -203,12 +203,8 @@ class FigmaAnalyzer extends Base {
       text: this.name,
     });
 
-    const componentsList = Object.values(this.fullAnalysis);
-    const componentsLabel =
-      componentsList.length > 1 ? "components" : "component";
-    const $info = this.createElement({
+    this.$info = this.createElement({
       className: "ResultsHeader__info",
-      text: `${this.fullAnalysis.length} properties found in ${componentsList.length} ${componentsLabel}`,
     });
 
     const $filter = this.createTypeFilter();
@@ -225,7 +221,7 @@ class FigmaAnalyzer extends Base {
     });
 
     $resultsHeaderLeft.appendChild($title);
-    $resultsHeaderLeft.appendChild($info);
+    $resultsHeaderLeft.appendChild(this.$info);
     $resultsHeaderOptions.appendChild($filter);
     $resultsHeaderOptions.appendChild($sortSelect);
 
@@ -234,6 +230,21 @@ class FigmaAnalyzer extends Base {
 
     $filter.addEventListener("change", (e) => this.onTypeFilterChange(e));
     $sortSelect.addEventListener("change", (e) => this.onSortChange(e));
+
+    this.updateHeaderInfo(this.fullAnalysis);
+  }
+
+  updateHeaderInfo(filteredAnalysis) {
+    const propertyCount = filteredAnalysis.length;
+    const componentCount = new Set(
+      filteredAnalysis.flatMap((prop) =>
+        prop.components.map((comp) => comp[1]),
+      ),
+    ).size;
+    const propertyLabel = propertyCount === 1 ? "property" : "properties";
+    const componentLabel = componentCount === 1 ? "component" : "components";
+
+    this.$info.textContent = `${propertyCount} ${propertyLabel} found in ${componentCount} ${componentLabel}`;
   }
 
   createTypeFilter() {
@@ -265,6 +276,11 @@ class FigmaAnalyzer extends Base {
 
   onTypeFilterChange(e) {
     this.currentFilter = e.target.value;
+    this.displayResultsContent();
+  }
+
+  onSortChange(e) {
+    this.currentSort = e.target.value;
     this.displayResultsContent();
   }
 
