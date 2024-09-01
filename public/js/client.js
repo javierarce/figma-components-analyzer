@@ -10,6 +10,8 @@ class FigmaAnalyzer extends Base {
     this.$loader = null;
     this.$download = null;
     this.$filter = null;
+    this.$sortSelect = null;
+    this.currentSort = "count";
 
     this.TYPES = {
       ALL: "ALL TYPES",
@@ -36,9 +38,11 @@ class FigmaAnalyzer extends Base {
         <form id="apiForm">
           <input type="text" id="token" placeholder="Figma Personal Access Token" required>
           <input type="text" id="fileKey" placeholder="Figma File Key" required>
-          <button type="submit">Analyze</button>
-          <div class="Download" id="download" style="display: none;">
-            <button id="downloadBtn">Download analysis</button>
+          <div class="Form__buttons">
+            <button type="submit">Analyze</button>
+            <div class="Download" id="download" style="display: none;">
+              <button id="downloadBtn" class="is-secondary">Download analysis</button>
+            </div>
           </div>
         </form>
       </div>
@@ -61,8 +65,14 @@ class FigmaAnalyzer extends Base {
     document.getElementById("token").value = this.token;
     document.getElementById("fileKey").value = this.fileKey;
   }
+
   createPropertyElements(analysis) {
     return analysis.map((propertyData) => {
+      // Sort values alphabetically
+      propertyData.values = propertyData.values.sort((a, b) =>
+        a.localeCompare(b),
+      );
+
       const property = new Property(propertyData, this.fileKey);
       return property.render();
     });
@@ -71,15 +81,55 @@ class FigmaAnalyzer extends Base {
   displayResultsContent() {
     this.$resultsContent.innerHTML = "";
 
-    const filteredAnalysis =
+    let filteredAnalysis =
       this.currentFilter === this.TYPES.ALL
         ? this.fullAnalysis
         : this.fullAnalysis.filter((prop) => prop.type === this.currentFilter);
+
+    // Sort the properties
+    filteredAnalysis = this.sortProperties(filteredAnalysis);
 
     const propertyElements = this.createPropertyElements(filteredAnalysis);
     propertyElements.forEach((element) => {
       this.$resultsContent.appendChild(element);
     });
+  }
+
+  sortProperties(properties) {
+    if (this.currentSort === "alphabetical") {
+      return properties.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      return properties.sort((a, b) => b.count - a.count);
+    }
+  }
+
+  createSortSelect() {
+    const $select = this.createElement({
+      elementType: "select",
+      className: "Sort",
+      id: "sort",
+    });
+
+    const options = [
+      { value: "count", text: "Sort by count" },
+      { value: "alphabetical", text: "Sort alphabetically" },
+    ];
+
+    options.forEach(({ value, text }) => {
+      const $option = this.createElement({
+        elementType: "option",
+        value,
+        text,
+      });
+      $select.appendChild($option);
+    });
+
+    return $select;
+  }
+
+  onSortChange(e) {
+    this.currentSort = e.target.value;
+    this.displayResultsContent();
   }
 
   formatAnalysisResults(analysis) {
@@ -162,25 +212,28 @@ class FigmaAnalyzer extends Base {
     });
 
     const $filter = this.createTypeFilter();
+    const $sortSelect = this.createSortSelect();
 
-    this.$resultsHeaderLeft = this.createElement({
+    const $resultsHeaderLeft = this.createElement({
       elementType: "div",
       className: "ResultsHeader__left",
     });
 
-    this.$resultsHeaderRight = this.createElement({
+    const $resultsHeaderOptions = this.createElement({
       elementType: "div",
-      className: "ResultsHeader__right",
+      className: "Results__headerOptions",
     });
 
-    this.$resultsHeaderLeft.appendChild($title);
-    this.$resultsHeaderLeft.appendChild($info);
-    this.$resultsHeaderRight.appendChild($filter);
+    $resultsHeaderLeft.appendChild($title);
+    $resultsHeaderLeft.appendChild($info);
+    $resultsHeaderOptions.appendChild($filter);
+    $resultsHeaderOptions.appendChild($sortSelect);
 
-    this.$resultsHeader.appendChild(this.$resultsHeaderLeft);
-    this.$resultsHeader.appendChild(this.$resultsHeaderRight);
+    this.$resultsHeader.appendChild($resultsHeaderLeft);
+    this.$resultsHeader.appendChild($resultsHeaderOptions);
 
     $filter.addEventListener("change", (e) => this.onTypeFilterChange(e));
+    $sortSelect.addEventListener("change", (e) => this.onSortChange(e));
   }
 
   createTypeFilter() {
