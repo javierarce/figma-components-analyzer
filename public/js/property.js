@@ -71,7 +71,6 @@ class Property extends Base {
     const componentId = e.target.dataset.componentId;
     const values = this.valueMap.get(componentId);
 
-    values = values.sort((a, b) => a.localeCompare(b));
     this.$el.classList.add("is-hover");
 
     if (values && values.length) {
