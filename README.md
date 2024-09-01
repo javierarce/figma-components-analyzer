@@ -11,14 +11,13 @@ predictability in the design system.
 
 ### Online version
 
-You can run the tool directly from [this page](https://javierarce.github.io/figma-components-analyzer). 
+You can run the tool directly from [this page](https://javierarce.github.io/figma-components-analyzer).
 
 ## Features
 
 - Fetches component data from a specified Figma file
-- Analyzes variant properties across all components
-- Provides insights on property types, possible values, and component usage
-- Generates a detailed analysis report in both console output and JSON format
+- Exposes variant properties and values across all components in the file
+- Provides a downloadable version of the analysis as a JSON file
 
 ## Prerequisites
 
