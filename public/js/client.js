@@ -270,7 +270,7 @@ class FigmaAnalyzer extends Base {
 
   displayError(error) {
     this.hideLoader();
-    this.$resultsHeader.classList.add("has-error");
+    this.$results.classList.add("has-error");
     this.$resultsContent.textContent = `Error: ${error.message}`;
   }
 
@@ -317,6 +317,7 @@ class FigmaAnalyzer extends Base {
 
   render() {
     this.renderTemplate();
+    this.$results = this.$el.querySelector(".js-results");
     this.$resultsHeader = this.$el.querySelector(".js-results-header");
     this.$resultsContent = this.$el.querySelector(".js-results-content");
     this.$loader = this.$el.querySelector(".js-results-loader");

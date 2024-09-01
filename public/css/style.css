@@ -77,6 +77,14 @@ h2 {
   border-left: 1px solid var(--border-color);
 }
 
+.Results.has-error .Results__header {
+  display: none;
+}
+
+.Results.has-error .Results__content {
+  padding: 1em;
+}
+
 .Results__header {
   padding: 1em;
   border-bottom: 1px solid var(--border-color);
