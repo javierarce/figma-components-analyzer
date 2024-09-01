@@ -14,7 +14,7 @@ class FigmaAnalyzer extends Base {
     this.currentSort = "count";
 
     this.TYPES = {
-      ALL: "ALL TYPES",
+      ALL: "All types",
       COMPONENT: "COMPONENT",
       INSTANCE: "INSTANCE",
       VARIANT: "VARIANT",
