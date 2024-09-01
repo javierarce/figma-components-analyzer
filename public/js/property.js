@@ -13,7 +13,7 @@ class Property extends Base {
           <span class="Property__name"><%= name %></span> &mdash; 
           <span class="Property__count"><%= count %> <%= count > 1 ? 'components' : 'component' %></span>
         </div>
-        <span class="Property__type is-<%= type.toLowerCase() %>"><%= type %></span>
+        <span class="Property__type is-<%= type.toLowerCase() %>"><%= typeName %></span>
       </div>
       <div class="Property__details">
         <% if (values && values.length) { %>
@@ -37,6 +37,7 @@ class Property extends Base {
   }
 
   render() {
+    this.data.typeName = this.data.type.replace(/_/g, " ");
     this.templateData = { ...this.data, fileKey: this.fileKey };
     super.render();
     this.$el.classList.add(`is-${this.data.type.toLowerCase()}`);

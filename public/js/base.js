@@ -16,7 +16,7 @@ class Base {
   }
 
   createElement({
-    className,
+    className = "",
     html,
     text,
     elementType = "div",
@@ -24,28 +24,25 @@ class Base {
     ...options
   }) {
     let $el = document.createElement(elementType);
-
     if (type) {
-      $el.type = "text";
+      $el.type = type;
     }
-
     if (html) {
       $el.innerHTML = html;
     } else if (text) {
       $el.innerText = text;
     }
-
-    className
-      .split(" ")
-      .filter((c) => c)
-      .forEach((name) => $el.classList.add(name));
-
+    if (className) {
+      className
+        .split(" ")
+        .filter((c) => c)
+        .forEach((name) => $el.classList.add(name));
+    }
     if (!this.isEmpty(options)) {
       Object.keys(options).forEach((key) => {
         $el[key] = options[key];
       });
     }
-
     return $el;
   }
 
@@ -62,15 +59,6 @@ class Base {
     });
   }
 
-  /*transitionWithDelay(el, action, className, delay) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        el.classList[action](className)
-        resolve();
-      }, delay)
-    })
-  }
-*/
   template() {
     return `<div class="Template"></div>`;
   }
@@ -84,7 +72,6 @@ class Base {
 
   on(name, callback) {
     const $el = this.$el || document.body;
-
     $el.addEventListener(name, (e) => {
       callback && callback(e.detail);
     });
@@ -95,15 +82,12 @@ class Base {
       console.error("Error: empty name event");
       return;
     }
-
     let event = undefined;
-
     if (data !== undefined) {
       event = new CustomEvent(name, { detail: data });
     } else {
       event = new Event(name);
     }
-
     const $el = this.$el || document.body;
     $el.dispatchEvent(event);
   }

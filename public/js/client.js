@@ -9,6 +9,15 @@ class FigmaAnalyzer extends Base {
     this.$resultsContent = null;
     this.$loader = null;
     this.$download = null;
+    this.$filter = null;
+
+    this.TYPES = {
+      ALL: "ALL TYPES",
+      COMPONENT: "COMPONENT",
+      INSTANCE: "INSTANCE",
+      VARIANT: "VARIANT",
+    };
+    this.currentFilter = this.TYPES.ALL;
   }
 
   bindEvents() {
@@ -62,7 +71,12 @@ class FigmaAnalyzer extends Base {
   displayResultsContent() {
     this.$resultsContent.innerHTML = "";
 
-    const propertyElements = this.createPropertyElements(this.fullAnalysis);
+    const filteredAnalysis =
+      this.currentFilter === this.TYPES.ALL
+        ? this.fullAnalysis
+        : this.fullAnalysis.filter((prop) => prop.type === this.currentFilter);
+
+    const propertyElements = this.createPropertyElements(filteredAnalysis);
     propertyElements.forEach((element) => {
       this.$resultsContent.appendChild(element);
     });
@@ -127,14 +141,13 @@ class FigmaAnalyzer extends Base {
     this.hideLoader();
     this.displayResultsHeader();
     this.displayResultsContent();
-    // this.addPropertyClickListeners();
     this.$download.style.display = "block";
   }
 
   displayResultsHeader() {
     this.$resultsHeader.classList.add("is-visible");
 
-    const $resultsHeaderTitle = this.createElement({
+    const $title = this.createElement({
       elementType: "h2",
       className: "ResultsHeader__title",
       text: this.name,
@@ -144,17 +157,68 @@ class FigmaAnalyzer extends Base {
     const componentsLabel =
       componentsList.length > 1 ? "components" : "component";
     const $info = this.createElement({
-      className: "Info",
+      className: "ResultsHeader__info",
       text: `${this.fullAnalysis.length} properties found in ${componentsList.length} ${componentsLabel}`,
     });
 
-    this.$resultsHeader.appendChild($resultsHeaderTitle);
-    this.$resultsHeader.appendChild($info);
+    const $filter = this.createTypeFilter();
+
+    this.$resultsHeaderLeft = this.createElement({
+      elementType: "div",
+      className: "ResultsHeader__left",
+    });
+
+    this.$resultsHeaderRight = this.createElement({
+      elementType: "div",
+      className: "ResultsHeader__right",
+    });
+
+    this.$resultsHeaderLeft.appendChild($title);
+    this.$resultsHeaderLeft.appendChild($info);
+    this.$resultsHeaderRight.appendChild($filter);
+
+    this.$resultsHeader.appendChild(this.$resultsHeaderLeft);
+    this.$resultsHeader.appendChild(this.$resultsHeaderRight);
+
+    $filter.addEventListener("change", (e) => this.onTypeFilterChange(e));
+  }
+
+  createTypeFilter() {
+    const types = [
+      this.TYPES.ALL,
+      ...new Set(this.fullAnalysis.map((prop) => prop.type)),
+    ];
+
+    const $select = this.createElement({
+      elementType: "select",
+      className: "Filter",
+      id: "filter",
+    });
+
+    types.forEach((value) => {
+      const text = value.replace(/_/g, " ");
+
+      const $option = this.createElement({
+        elementType: "option",
+        value,
+        text,
+      });
+
+      $select.appendChild($option);
+    });
+
+    return $select;
+  }
+
+  onTypeFilterChange(e) {
+    this.currentFilter = e.target.value;
+    this.displayResultsContent();
   }
 
   displayError(error) {
     this.hideLoader();
-    this.$resultsContent.textContent = "Error: " + error.message;
+    this.$resultsHeader.classList.add("has-error");
+    this.$resultsContent.textContent = `Error: ${error.message}`;
   }
 
   onDownload(e) {
