@@ -5,7 +5,7 @@
   --border-color: #cccccc;
   --border-color-hover: #b3b3b3;
   --border-color-focus: #4a90e2;
-  --form-background: #f5f5f5;
+  --highlighted-color: #f5f5f5;
   --background: var(--white);
   --text: var(--black);
   --space: 0.4em;
@@ -62,7 +62,7 @@ h2 {
   display: flex;
   flex-direction: column;
   padding: 1em;
-  background: var(--form-background);
+  background: var(--highlighted-color);
 }
 
 .Form__buttons {
@@ -233,6 +233,14 @@ input[type="text"]:focus {
   opacity: 0.3;
 }
 
+.Property__value:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-color: rgba(0, 0, 0, 0.3);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .Property.is-hover .Property__value.is-highlighted {
   opacity: 1;
   text-decoration: underline;
@@ -279,19 +287,21 @@ input[type="text"]:focus {
   border-radius: 20px;
   padding: 2px 8px;
   text-decoration: none;
-  margin-right: var(--space);
+  margin-right: 0.2em;
   margin-bottom: var(--space);
 }
+
+.Component.is-highlighted,
 .Component:hover {
-  background: #f0f0f0;
-  color: #000;
+  background: var(--highlighted-color);
+  color: var(--black);
 }
 
 .Property__type {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--form-background);
+  background: var(--highlighted-color);
   color: var(--text);
   border-radius: var(--border-radius);
   font-size: 0.8em;
