@@ -162,6 +162,12 @@ button {
   border: none;
   border-radius: var(--border-radius);
   color: var(--white);
+  transition: opacity 0.3s ease-in-out;
+}
+
+button.is-hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 button.is-secondary {
@@ -192,13 +198,11 @@ input[type="text"] {
     box-shadow 0.3s;
 }
 
-input[type="text"]:hover,
-.TypeFilter:hover {
+input[type="text"]:hover {
   border-color: var(--border-color-hover);
 }
 
-input[type="text"]:focus,
-.TypeFilter:focus {
+input[type="text"]:focus {
   outline: none;
   border-color: var(--border-color-focus);
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
@@ -341,11 +345,10 @@ input[type="text"]:focus,
 }
 
 .Property__components {
-  margin-top: var(--space);
+  margin-top: calc(var(--space) * 2);
 }
 
-.Filter,
-.Sort {
+.Select {
   font-family: inherit;
   font-size: 0.8em;
   padding: 8px;
@@ -364,19 +367,17 @@ input[type="text"]:focus,
   padding-right: 2em;
 }
 
-.Filter:hover,
-.Sort:hover {
+.Select:hover {
   border-color: var(--border-color-hover);
 }
 
-.Filter:focus,
-.Sort:focus {
+.Select:focus {
   outline: none;
   border-color: var(--border-color-focus);
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
 }
 
-.Filter option,
+.Select option,
 .Sort option {
   font-weight: normal;
   display: block;
@@ -408,8 +409,7 @@ input[type="text"]:focus,
   }
 
   .Results__headerOptions,
-  .Filter,
-  .Sort {
+  .Select {
     width: 100%;
   }
 }

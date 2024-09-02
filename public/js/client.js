@@ -8,7 +8,6 @@ class FigmaAnalyzer extends Base {
     this.$resultsHeader = null;
     this.$resultsContent = null;
     this.$loader = null;
-    this.$download = null;
     this.$filter = null;
     this.$sortSelect = null;
     this.currentSort = "count";
@@ -28,7 +27,7 @@ class FigmaAnalyzer extends Base {
       .getElementById("apiForm")
       .addEventListener("submit", (e) => this.onSubmit(e));
     document
-      .getElementById("downloadBtn")
+      .getElementById("download")
       .addEventListener("click", (e) => this.onDownload(e));
   }
 
@@ -41,9 +40,7 @@ class FigmaAnalyzer extends Base {
           <input type="text" id="fileKey" placeholder="Figma File Key" required>
           <div class="Form__buttons">
             <button type="submit">Analyze</button>
-            <div class="Download" id="download" style="display: none;">
-              <button id="downloadBtn" class="is-secondary">Download analysis</button>
-            </div>
+            <button id="download" class="is-hidden is-secondary">Download analysis</button>
           </div>
         </form>
       </div>
@@ -69,7 +66,6 @@ class FigmaAnalyzer extends Base {
 
   createPropertyElements(analysis) {
     return analysis.map((propertyData) => {
-      // Sort values alphabetically
       propertyData.values = propertyData.values.sort((a, b) =>
         a.localeCompare(b),
       );
@@ -87,10 +83,8 @@ class FigmaAnalyzer extends Base {
         ? this.fullAnalysis
         : this.fullAnalysis.filter((prop) => prop.type === this.currentFilter);
 
-    // Update header info with filtered analysis
     this.updateHeaderInfo(filteredAnalysis);
 
-    // Sort the properties
     filteredAnalysis = this.sortProperties(filteredAnalysis);
 
     const propertyElements = this.createPropertyElements(filteredAnalysis);
@@ -110,7 +104,7 @@ class FigmaAnalyzer extends Base {
   createSortSelect() {
     const $select = this.createElement({
       elementType: "select",
-      className: "Sort",
+      className: "Sort Select",
       id: "sort",
     });
 
@@ -127,6 +121,8 @@ class FigmaAnalyzer extends Base {
       });
       $select.appendChild($option);
     });
+
+    $select.addEventListener("change", (e) => this.onSortChange(e));
 
     return $select;
   }
@@ -168,7 +164,7 @@ class FigmaAnalyzer extends Base {
     this.$resultsHeader.classList.remove("is-visible");
     this.$resultsHeader.innerHTML = "";
     this.$resultsContent.innerHTML = "";
-    this.$download.style.display = "none";
+    this.$download.classList.add("is-hidden");
   }
 
   showLoader() {
@@ -191,7 +187,7 @@ class FigmaAnalyzer extends Base {
     this.hideLoader();
     this.displayResultsHeader();
     this.displayResultsContent();
-    this.$download.style.display = "block";
+    this.$download.classList.remove("is-hidden");
   }
 
   displayResultsHeader() {
@@ -208,7 +204,7 @@ class FigmaAnalyzer extends Base {
     });
 
     const $filter = this.createTypeFilter();
-    const $sortSelect = this.createSortSelect();
+    const $sort = this.createSortSelect();
 
     const $resultsHeaderLeft = this.createElement({
       elementType: "div",
@@ -222,14 +218,17 @@ class FigmaAnalyzer extends Base {
 
     $resultsHeaderLeft.appendChild($title);
     $resultsHeaderLeft.appendChild(this.$info);
-    $resultsHeaderOptions.appendChild($filter);
-    $resultsHeaderOptions.appendChild($sortSelect);
+
+    if ($filter) {
+      $resultsHeaderOptions.appendChild($filter);
+    }
+
+    if ($sort) {
+      $resultsHeaderOptions.appendChild($sort);
+    }
 
     this.$resultsHeader.appendChild($resultsHeaderLeft);
     this.$resultsHeader.appendChild($resultsHeaderOptions);
-
-    $filter.addEventListener("change", (e) => this.onTypeFilterChange(e));
-    $sortSelect.addEventListener("change", (e) => this.onSortChange(e));
 
     this.updateHeaderInfo(this.fullAnalysis);
   }
@@ -253,9 +252,13 @@ class FigmaAnalyzer extends Base {
       ...new Set(this.fullAnalysis.map((prop) => prop.type)),
     ];
 
+    if (types.length < 3) {
+      return false;
+    }
+
     const $select = this.createElement({
       elementType: "select",
-      className: "Filter",
+      className: "Filter Select",
       id: "filter",
     });
 
@@ -270,6 +273,8 @@ class FigmaAnalyzer extends Base {
 
       $select.appendChild($option);
     });
+
+    $select.addEventListener("change", (e) => this.onTypeFilterChange(e));
 
     return $select;
   }
