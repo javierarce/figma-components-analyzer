@@ -180,14 +180,112 @@ class FigmaAnalyzer extends Base {
     const document = await library.fetch();
     this.name = document.name;
     this.lastModified = document.lastModified;
-    this.fullAnalysis = library.analyzeComponentNames(document.properties);
+    const analysis = library.analyzeComponentNames(document.properties);
+    this.fullAnalysis = analysis.properties;
+    this.inconsistencies = analysis.inconsistencies;
   }
 
   displayResults() {
     this.hideLoader();
     this.displayResultsHeader();
     this.displayResultsContent();
+    this.displayInconsistencies();
     this.$download.classList.remove("is-hidden");
+  }
+
+  displayInconsistencies() {
+    if (this.inconsistencies.length > 0) {
+      const $inconsistencies = this.createElement({
+        elementType: "div",
+        className: "Inconsistencies",
+      });
+
+      const $header = this.createElement({
+        elementType: "div",
+        className: "Inconsistencies__header",
+      });
+
+      const $title = this.createElement({
+        elementType: "h3",
+        text: `${this.inconsistencies.length} possible inconsistencies found.`,
+      });
+
+      const $list = this.createElement({
+        elementType: "ul",
+        className: "Inconsistencies__list hidden",
+      });
+
+      this.inconsistencies.forEach((inconsistency) => {
+        const $item = this.createElement({
+          elementType: "li",
+        });
+
+        $item.innerHTML = `<strong>${inconsistency.normalizedName}</strong>: `;
+
+        inconsistency.variants.forEach((variant, index) => {
+          const $variantLink = this.createElement({
+            elementType: "a",
+            className: "Inconsistencies__variant-link",
+            text: variant,
+          });
+          $variantLink.href = "#";
+          $variantLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            this.scrollToVariant(variant);
+          });
+
+          $item.appendChild($variantLink);
+
+          if (index < inconsistency.variants.length - 1) {
+            $item.appendChild(document.createTextNode(", "));
+          }
+        });
+
+        $list.appendChild($item);
+      });
+
+      $header.appendChild($title);
+      $inconsistencies.appendChild($header);
+      $inconsistencies.appendChild($list);
+
+      $header.addEventListener("click", () =>
+        this.toggleInconsistencies($list, $header),
+      );
+
+      this.$resultsHeader.insertAdjacentElement("afterend", $inconsistencies);
+    }
+  }
+
+  scrollToVariant(variantName) {
+    const $propertyElements =
+      this.$resultsContent.querySelectorAll(".Property");
+
+    for (const $property of $propertyElements) {
+      const $propertyName = $property.querySelector(".Property__name");
+
+      if ($propertyName && $propertyName.textContent.trim() === variantName) {
+        const containerTop = this.$resultsContent.getBoundingClientRect().top;
+        const elementTop = $property.getBoundingClientRect().top;
+        const offset =
+          elementTop - containerTop + this.$resultsContent.scrollTop - 20;
+
+        this.$resultsContent.scrollTo({
+          top: offset,
+          behavior: "smooth",
+        });
+
+        $property.classList.add("highlight");
+        setTimeout(() => {
+          $property.classList.remove("highlight");
+        }, 2000);
+        break;
+      }
+    }
+  }
+
+  toggleInconsistencies($list, $header) {
+    $header.classList.toggle("is-open");
+    $list.classList.toggle("hidden");
   }
 
   displayResultsHeader() {

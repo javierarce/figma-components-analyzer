@@ -4,6 +4,43 @@ class Library {
     this.fileID = fileID;
   }
 
+  normalizePropName(name) {
+    return name
+      .toLowerCase()
+      .replace(/[_\s-]+/g, "") // Remove underscores, spaces, and hyphens
+      .replace(/[?!]+/g, "") // Remove question marks and exclamation points
+      .replace(/^is/, "") // Remove leading "is"
+      .replace(/^has/, ""); // Remove leading "has"
+  }
+
+  detectNamingInconsistencies(variantProperties) {
+    const propertyGroups = {};
+    const inconsistencies = [];
+
+    for (const [componentName, componentData] of Object.entries(
+      variantProperties,
+    )) {
+      for (const propName in componentData.properties) {
+        const normalizedName = this.normalizePropName(propName);
+        if (!propertyGroups[normalizedName]) {
+          propertyGroups[normalizedName] = new Set();
+        }
+        propertyGroups[normalizedName].add(propName);
+      }
+    }
+
+    for (const [normalizedName, variants] of Object.entries(propertyGroups)) {
+      if (variants.size > 1) {
+        inconsistencies.push({
+          normalizedName,
+          variants: Array.from(variants),
+        });
+      }
+    }
+
+    return inconsistencies;
+  }
+
   async fetch() {
     try {
       const response = await fetch(
@@ -123,6 +160,7 @@ class Library {
         ]);
       }
     }
+
     const sortedProperties = Object.values(propertyAnalysis)
       .map(({ name, type, count, values, components }) => ({
         name,
@@ -132,6 +170,11 @@ class Library {
         components: Array.from(components),
       }))
       .sort((a, b) => b.count - a.count);
-    return sortedProperties;
+    const inconsistencies = this.detectNamingInconsistencies(variantProperties);
+
+    return {
+      properties: sortedProperties,
+      inconsistencies: inconsistencies,
+    };
   }
 }
