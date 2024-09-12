@@ -310,7 +310,7 @@ class FigmaAnalyzer extends Base {
 
         setTimeout(() => {
           $property.classList.remove("highlight");
-        }, 4000);
+        }, 6000);
         break;
       }
     }
