@@ -13,6 +13,7 @@
   --header-height: 110px;
   --small-font-size: 0.9em;
   --tiny-font-size: 0.8em;
+  --opacity-light: 0.5;
 }
 
 /* Base Styles */
@@ -236,7 +237,7 @@ input[type="text"]:focus {
 }
 
 .Property.is-hover .Property__value {
-  opacity: 0.3;
+  opacity: var(--opacity-light);
 }
 
 .Property__value:hover {
@@ -282,25 +283,12 @@ input[type="text"]:focus {
   font-size: 1.2em;
 }
 
-.Component {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  color: var(--text);
-  font-size: var(--tiny-font-size);
-  border-radius: 20px;
-  padding: 2px 8px;
-  text-decoration: none;
-  margin-right: 0.2em;
-  margin-bottom: var(--space);
+.Property.highlight {
+  animation: highlightFade 2s;
 }
 
-.Component.is-highlighted,
-.Component:hover {
-  background: var(--highlighted-color);
-  color: var(--black);
+.Property__count {
+  opacity: var(--opacity-light);
 }
 
 .Property__type {
@@ -362,6 +350,27 @@ input[type="text"]:focus {
 
 .Property__components {
   margin-top: calc(var(--space) * 2);
+}
+
+.Component {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--border-color);
+  color: var(--text);
+  font-size: var(--tiny-font-size);
+  border-radius: 20px;
+  padding: 2px 8px;
+  text-decoration: none;
+  margin-right: 0.2em;
+  margin-bottom: var(--space);
+}
+
+.Component.is-highlighted,
+.Component:hover {
+  background: var(--highlighted-color);
+  color: var(--black);
 }
 
 .Select {
@@ -469,7 +478,7 @@ input[type="text"]:focus {
 }
 
 .Inconsistencies__variant-count {
-  opacity: 0.5;
+  opacity: var(--opacity-light);
 }
 
 .Inconsistencies__variant-info {
@@ -495,10 +504,6 @@ input[type="text"]:focus {
 
 .Inconsistencies__variant-link:hover {
   text-decoration: underline;
-}
-
-.Property.highlight {
-  animation: highlightFade 2s;
 }
 
 @keyframes highlightFade {
