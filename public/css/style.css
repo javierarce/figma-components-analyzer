@@ -418,6 +418,7 @@ input[type="text"]:focus {
   padding: 1em;
   cursor: pointer;
   position: relative;
+  user-select: none;
 }
 
 .Inconsistencies__header:after {
@@ -465,18 +466,7 @@ input[type="text"]:focus {
 }
 
 .Inconsistencies__variant-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--highlighted-color);
-  color: var(--text);
-  border-radius: 50px;
-  font-size: 0.8em;
-  text-transform: uppercase;
-  padding: 4px 8px;
-  font-weight: 500;
-  width: 12px;
-  height: 12px;
+  opacity: 0.5;
 }
 
 .Inconsistencies__variant-info:last-child {
