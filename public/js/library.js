@@ -23,17 +23,30 @@ class Library {
       for (const propName in componentData.properties) {
         const normalizedName = this.normalizePropName(propName);
         if (!propertyGroups[normalizedName]) {
-          propertyGroups[normalizedName] = new Set();
+          propertyGroups[normalizedName] = new Map();
         }
-        propertyGroups[normalizedName].add(propName);
+        if (!propertyGroups[normalizedName].has(propName)) {
+          propertyGroups[normalizedName].set(propName, new Set());
+        }
+        propertyGroups[normalizedName].get(propName).add({
+          name: componentName,
+          id: componentData.id,
+        });
       }
     }
 
-    for (const [normalizedName, variants] of Object.entries(propertyGroups)) {
-      if (variants.size > 1) {
+    for (const [normalizedName, variantsMap] of Object.entries(
+      propertyGroups,
+    )) {
+      if (variantsMap.size > 1) {
         inconsistencies.push({
           normalizedName,
-          variants: Array.from(variants),
+          variants: Array.from(variantsMap).map(
+            ([variantName, components]) => ({
+              name: variantName,
+              components: Array.from(components),
+            }),
+          ),
         });
       }
     }

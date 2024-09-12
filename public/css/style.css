@@ -438,19 +438,61 @@ input[type="text"]:focus {
   transform: translateY(-50%) rotate(180deg);
 }
 
-.Inconsistencies__list {
+.Inconsistencies__list-wrapper {
   padding: 1em;
   margin: 0;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--border-color);
   background: #f1f1f1;
+  height: 300px;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 
-.Inconsistencies__list.hidden {
+.Inconsistencies__list-wrapper.is-hidden {
   display: none;
 }
 
+.Inconsistencies__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
 .Inconsistencies__list li {
-  margin-bottom: 5px;
+  display: flex;
+  background: var(--white);
+  border-radius: var(--border-radius);
+}
+
+.Inconsistencies__variant-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--highlighted-color);
+  color: var(--text);
+  border-radius: 50px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  font-weight: 500;
+  width: 12px;
+  height: 12px;
+}
+
+.Inconsistencies__variant-info:last-child {
+  border-right: none;
+}
+
+.Inconsistencies__variant-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-right: 1px solid #f1f1f1;
+  padding: 0.6em;
+  gap: 0.4em;
+}
+.Inconsistencies__component-list {
+  font-size: 0.9em;
 }
 
 .Inconsistencies__list li strong {

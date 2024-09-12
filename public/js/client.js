@@ -210,34 +210,65 @@ class FigmaAnalyzer extends Base {
         text: `${this.inconsistencies.length} possible inconsistencies found.`,
       });
 
+      const $listWrapper = this.createElement({
+        elementType: "div",
+        className: "Inconsistencies__list-wrapper is-hidden",
+      });
+
       const $list = this.createElement({
         elementType: "ul",
-        className: "Inconsistencies__list hidden",
+        className: "Inconsistencies__list",
       });
 
       this.inconsistencies.forEach((inconsistency) => {
+        // Sort variants by number of components (descending order)
+        inconsistency.variants.sort(
+          (a, b) => b.components.length - a.components.length,
+        );
+
         const $item = this.createElement({
           elementType: "li",
         });
 
-        $item.innerHTML = `<strong>${inconsistency.normalizedName}</strong>: `;
-
         inconsistency.variants.forEach((variant, index) => {
+          const $variantInfo = this.createElement({
+            elementType: "div",
+            className: "Inconsistencies__variant-info",
+          });
+
           const $variantLink = this.createElement({
             elementType: "a",
             className: "Inconsistencies__variant-link",
-            text: variant,
+            text: variant.name,
           });
+
           $variantLink.href = "#";
           $variantLink.addEventListener("click", (e) => {
             e.preventDefault();
-            this.scrollToVariant(variant);
+
+            this.toggleInconsistencies($listWrapper, $header);
+            this.scrollToVariant(variant.name);
           });
 
-          $item.appendChild($variantLink);
+          const $variantCount = this.createElement({
+            elementType: "span",
+            className: "Inconsistencies__variant-count",
+            text: variant.components.length,
+          });
+
+          $variantInfo.appendChild($variantLink);
+          $variantInfo.appendChild($variantCount);
+
+          const $componentList = this.createElement({
+            elementType: "span",
+            className: "Inconsistencies__component-list",
+          });
+
+          $variantInfo.appendChild($componentList);
+          $item.appendChild($variantInfo);
 
           if (index < inconsistency.variants.length - 1) {
-            $item.appendChild(document.createTextNode(", "));
+            $item.appendChild(document.createTextNode(" "));
           }
         });
 
@@ -246,10 +277,11 @@ class FigmaAnalyzer extends Base {
 
       $header.appendChild($title);
       $inconsistencies.appendChild($header);
-      $inconsistencies.appendChild($list);
+      $listWrapper.appendChild($list);
+      $inconsistencies.appendChild($listWrapper);
 
       $header.addEventListener("click", () =>
-        this.toggleInconsistencies($list, $header),
+        this.toggleInconsistencies($listWrapper, $header),
       );
 
       this.$resultsHeader.insertAdjacentElement("afterend", $inconsistencies);
@@ -275,17 +307,18 @@ class FigmaAnalyzer extends Base {
         });
 
         $property.classList.add("highlight");
+
         setTimeout(() => {
           $property.classList.remove("highlight");
-        }, 2000);
+        }, 4000);
         break;
       }
     }
   }
 
-  toggleInconsistencies($list, $header) {
+  toggleInconsistencies($listWrapper, $header) {
     $header.classList.toggle("is-open");
-    $list.classList.toggle("hidden");
+    $listWrapper.classList.toggle("is-hidden");
   }
 
   displayResultsHeader() {
