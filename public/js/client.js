@@ -36,7 +36,7 @@ class FigmaAnalyzer extends Base {
       <div class="Form">
         <h2>Figma<br />Components<br />Analyzer</h2>
         <form id="apiForm">
-          <input type="text" id="token" placeholder="Figma Personal Access Token" required>
+          <input type="password" id="token" placeholder="Figma Personal Access Token" required>
           <input type="text" id="fileKey" placeholder="Figma File Key" required>
           <div class="Form__buttons">
             <button type="submit">Analyze</button>
